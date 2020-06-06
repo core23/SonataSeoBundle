@@ -18,6 +18,7 @@ use Knp\Menu\ItemInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\Service\MenuBlockService;
+use Sonata\SeoBundle\Breadcrumb;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
@@ -26,7 +27,7 @@ use Twig\Environment;
  *
  * @author Sylvain Deloux <sylvain.deloux@ekino.com>
  */
-abstract class BaseBreadcrumbMenuBlockService extends AbstractBlockService
+abstract class BaseBreadcrumbMenuBlockService extends AbstractBlockService implements Breadcrumb
 {
     /**
      * @var MenuBlockService

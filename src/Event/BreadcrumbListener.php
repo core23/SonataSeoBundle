@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\SeoBundle\Event;
 
-use Sonata\BlockBundle\Block\BlockServiceInterface;
+use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
 use Sonata\BlockBundle\Event\BlockEvent;
 use Sonata\BlockBundle\Model\Block;
+use Sonata\SeoBundle\Breadcrumb;
+use TypeError;
 
 /**
  * BreadcrumbListener for Block Event.
@@ -32,11 +34,18 @@ final class BreadcrumbListener
     /**
      * Add a renderer to the status services list.
      *
-     * @param string $type
+     * @param string     $type
+     * @param Breadcrumb $breadcrumb
      */
-    public function addBlockService($type, BlockServiceInterface $blockService): void
+    public function addBlockService($type, $breadcrumb): void
     {
-        $this->blockServices[$type] = $blockService;
+        if ($breadcrumb instanceof BlockServiceInterface) {
+            @trigger_error(sprintf('Passing an %s instance is deprecated since 2.x', BlockServiceInterface::class), E_USER_DEPRECATED);
+        } elseif (!$breadcrumb instanceof Breadcrumb) {
+            throw new TypeError(sprintf('Invalid type given %s, %s expected', \get_class($breadcrumb), Breadcrumb::class));
+        }
+
+        $this->blockServices[$type] = $breadcrumb;
     }
 
     /**
